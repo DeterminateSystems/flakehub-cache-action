@@ -54,7 +54,7 @@ cat action.yml| nix run nixpkgs#yq-go -- '[[ "Parameter", "Description", "Requir
 | Parameter                   | Description                                                                                                     | Required | Default                    |
 | --------------------------- | --------------------------------------------------------------------------------------------------------------- | -------- | -------------------------- |
 | `diagnostic-endpoint`       | Diagnostic endpoint url where diagnostics and performance data is sent. To disable set this to an empty string. |          | -                          |
-| `diff-store`                | Whether or not to diff the store before and after Magic Nix Cache runs                                          |          |                            |
+| `diff-store`                | Whether or not to diff the store before and after `magic-nix-cache` runs                                          |          |                            |
 | `flakehub-api-server`       | The FlakeHub API server.                                                                                        |          | https://api.flakehub.com   |
 | `flakehub-cache-server`     | The FlakeHub binary cache server.                                                                               |          | https://cache.flakehub.com |
 | `flakehub-flake-name`       | The name of your flake on FlakeHub. The empty string will autodetect your FlakeHub flake.                       |          |                            |
