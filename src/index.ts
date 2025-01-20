@@ -1,4 +1,4 @@
-import { getTrinaryInput, netrcPath, tailLog } from "./helpers.js";
+import { netrcPath, tailLog } from "./helpers.js";
 import * as actionsCore from "@actions/core";
 import { DetSysAction, inputs, stringifyError } from "detsys-ts";
 import got, { Got, Response } from "got";
@@ -25,7 +25,7 @@ const STATE_STARTED = "MAGIC_NIX_CACHE_STARTED";
 const STARTED_HINT = "true";
 
 const TEXT_ALREADY_RUNNING =
-  "Magic Nix Cache is already running, this workflow job is in noop mode. Is the Magic Nix Cache in the workflow twice?";
+  "FlakeHub Cache Action is already running, this workflow job is in noop mode. Is the Magic Nix Cache in the workflow twice?";
 const TEXT_TRUST_UNTRUSTED =
   "The Nix daemon does not consider the user running this workflow to be trusted. Magic Nix Cache is disabled.";
 const TEXT_TRUST_UNKNOWN =
@@ -44,7 +44,7 @@ class MagicNixCacheAction extends DetSysAction {
 
   constructor() {
     super({
-      name: "magic-nix-cache",
+      name: "flakehub-cache-action",
       fetchStyle: "gh-env-style",
       idsProjectName: "magic-nix-cache-closure",
       requireNix: "warn",
@@ -207,44 +207,36 @@ class MagicNixCacheAction extends DetSysAction {
     const log = tailLog(this.daemonDir);
     const netrc = await netrcPath();
     const nixConfPath = `${process.env["HOME"]}/.config/nix/nix.conf`;
-    const upstreamCache = inputs.getString("upstream-cache");
-    const useFlakeHub = getTrinaryInput("use-flakehub");
+
     const flakeHubCacheServer = inputs.getString("flakehub-cache-server");
     const flakeHubApiServer = inputs.getString("flakehub-api-server");
     const flakeHubFlakeName = inputs.getString("flakehub-flake-name");
-    const useGhaCache = getTrinaryInput("use-gha-cache");
 
     const daemonCliFlags: string[] = [
       "--startup-notification-url",
       `http://127.0.0.1:${notifyPort}`,
       "--listen",
       this.hostAndPort,
-      "--upstream",
-      upstreamCache,
       "--diagnostic-endpoint",
       (await this.getDiagnosticsUrl())?.toString() ?? "",
       "--nix-conf",
       nixConfPath,
       "--use-gha-cache",
-      useGhaCache,
+      "false",
       "--use-flakehub",
-      useFlakeHub,
+      "true",
     ]
       .concat(this.diffStore ? ["--diff-store"] : [])
-      .concat(
-        useFlakeHub !== "disabled"
-          ? [
-              "--flakehub-cache-server",
-              flakeHubCacheServer,
-              "--flakehub-api-server",
-              flakeHubApiServer,
-              "--flakehub-api-server-netrc",
-              netrc,
-              "--flakehub-flake-name",
-              flakeHubFlakeName,
-            ]
-          : [],
-      );
+      .concat([
+        "--flakehub-cache-server",
+        flakeHubCacheServer,
+        "--flakehub-api-server",
+        flakeHubApiServer,
+        "--flakehub-api-server-netrc",
+        netrc,
+        "--flakehub-flake-name",
+        flakeHubFlakeName,
+      ]);
 
     const opts: SpawnOptions = {
       stdio: ["ignore", output, output],

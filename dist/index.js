@@ -84764,26 +84764,6 @@ var external_http_ = __nccwpck_require__(8611);
 
 
 
-function getTrinaryInput(name) {
-  const trueValue = ["true", "True", "TRUE", "enabled"];
-  const falseValue = ["false", "False", "FALSE", "disabled"];
-  const noPreferenceValue = ["", "null", "no-preference"];
-  const val = core.getInput(name);
-  if (trueValue.includes(val)) {
-    return "enabled";
-  }
-  if (falseValue.includes(val)) {
-    return "disabled";
-  }
-  if (noPreferenceValue.includes(val)) {
-    return "no-preference";
-  }
-  const possibleValues = trueValue.concat(falseValue).concat(noPreferenceValue).join(" | ");
-  throw new TypeError(
-    `Input ${name} does not look like a trinary, which requires one of:
-${possibleValues}`
-  );
-}
 function tailLog(daemonDir) {
   const log = new tail/* Tail */.P(external_node_path_namespaceObject.join(daemonDir, "daemon.log"));
   core.debug(`tailing daemon.log...`);
@@ -84851,13 +84831,13 @@ var STATE_DAEMONDIR = "MAGIC_NIX_CACHE_DAEMONDIR";
 var STATE_ERROR_IN_MAIN = "ERROR_IN_MAIN";
 var STATE_STARTED = "MAGIC_NIX_CACHE_STARTED";
 var STARTED_HINT = "true";
-var TEXT_ALREADY_RUNNING = "Magic Nix Cache is already running, this workflow job is in noop mode. Is the Magic Nix Cache in the workflow twice?";
+var TEXT_ALREADY_RUNNING = "FlakeHub Cache Action is already running, this workflow job is in noop mode. Is the Magic Nix Cache in the workflow twice?";
 var TEXT_TRUST_UNTRUSTED = "The Nix daemon does not consider the user running this workflow to be trusted. Magic Nix Cache is disabled.";
 var TEXT_TRUST_UNKNOWN = "The Nix daemon may not consider the user running this workflow to be trusted. Magic Nix Cache may not start correctly.";
 var MagicNixCacheAction = class extends DetSysAction {
   constructor() {
     super({
-      name: "magic-nix-cache",
+      name: "flakehub-cache-action",
       fetchStyle: "gh-env-style",
       idsProjectName: "magic-nix-cache-closure",
       requireNix: "warn",
@@ -84992,39 +84972,32 @@ var MagicNixCacheAction = class extends DetSysAction {
     const log = tailLog(this.daemonDir);
     const netrc = await netrcPath();
     const nixConfPath = `${process.env["HOME"]}/.config/nix/nix.conf`;
-    const upstreamCache = inputs_exports.getString("upstream-cache");
-    const useFlakeHub = getTrinaryInput("use-flakehub");
     const flakeHubCacheServer = inputs_exports.getString("flakehub-cache-server");
     const flakeHubApiServer = inputs_exports.getString("flakehub-api-server");
     const flakeHubFlakeName = inputs_exports.getString("flakehub-flake-name");
-    const useGhaCache = getTrinaryInput("use-gha-cache");
     const daemonCliFlags = [
       "--startup-notification-url",
       `http://127.0.0.1:${notifyPort}`,
       "--listen",
       this.hostAndPort,
-      "--upstream",
-      upstreamCache,
       "--diagnostic-endpoint",
       (await this.getDiagnosticsUrl())?.toString() ?? "",
       "--nix-conf",
       nixConfPath,
       "--use-gha-cache",
-      useGhaCache,
+      "false",
       "--use-flakehub",
-      useFlakeHub
-    ].concat(this.diffStore ? ["--diff-store"] : []).concat(
-      useFlakeHub !== "disabled" ? [
-        "--flakehub-cache-server",
-        flakeHubCacheServer,
-        "--flakehub-api-server",
-        flakeHubApiServer,
-        "--flakehub-api-server-netrc",
-        netrc,
-        "--flakehub-flake-name",
-        flakeHubFlakeName
-      ] : []
-    );
+      "true"
+    ].concat(this.diffStore ? ["--diff-store"] : []).concat([
+      "--flakehub-cache-server",
+      flakeHubCacheServer,
+      "--flakehub-api-server",
+      flakeHubApiServer,
+      "--flakehub-api-server-netrc",
+      netrc,
+      "--flakehub-flake-name",
+      flakeHubFlakeName
+    ]);
     const opts = {
       stdio: ["ignore", output, output],
       env: runEnv,
