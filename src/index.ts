@@ -222,9 +222,9 @@ class MagicNixCacheAction extends DetSysAction {
       "--nix-conf",
       nixConfPath,
       "--use-gha-cache",
-      "false",
+      "disabled",
       "--use-flakehub",
-      "true",
+      "enabled",
     ]
       .concat(this.diffStore ? ["--diff-store"] : [])
       .concat([
