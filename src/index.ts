@@ -10,8 +10,8 @@ import * as path from "node:path";
 import { setTimeout } from "node:timers/promises";
 
 // The ENV_DAEMON_DIR is intended to determine if we "own" the daemon or not,
-// in the case that a user has put the magic nix cache into their workflow
-// twice.
+// in the case that a user has put the flakehub cache into their workflow
+// twice. Note: we continue to use MAGIC_NIX_CACHE_ since MNC and FHC are identical.
 const ENV_DAEMON_DIR = "MAGIC_NIX_CACHE_DAEMONDIR";
 
 const FACT_ENV_VARS_PRESENT = "required_env_vars_present";
@@ -31,7 +31,7 @@ const TEXT_TRUST_UNTRUSTED =
 const TEXT_TRUST_UNKNOWN =
   "The Nix daemon may not consider the user running this workflow to be trusted. Magic Nix Cache may not start correctly.";
 
-class MagicNixCacheAction extends DetSysAction {
+class FlakeHubCacheAction extends DetSysAction {
   private hostAndPort: string;
   private diffStore: boolean;
   private httpClient: Got;
@@ -44,7 +44,7 @@ class MagicNixCacheAction extends DetSysAction {
 
   constructor() {
     super({
-      name: "magic-nix-cache",
+      name: "flakehub-cache",
       fetchStyle: "gh-env-style",
       idsProjectName: "magic-nix-cache-closure",
       requireNix: "warn",
@@ -374,7 +374,7 @@ class MagicNixCacheAction extends DetSysAction {
       }
 
       this.addFact(FACT_SENT_SIGTERM, true);
-      actionsCore.info(`Sending Magic Nix Cache a SIGTERM`);
+      actionsCore.info(`Sending magic-nix-cache a SIGTERM`);
       process.kill(pid, "SIGTERM");
     } catch {
       // Perfectly normal to get an exception here, because the process shut down.
@@ -407,7 +407,7 @@ class MagicNixCacheAction extends DetSysAction {
 }
 
 function main(): void {
-  new MagicNixCacheAction().execute();
+  new FlakeHubCacheAction().execute();
 }
 
 main();

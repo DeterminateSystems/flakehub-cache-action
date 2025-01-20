@@ -6,7 +6,7 @@ Use Magic Nix Cache, a totally free and zero-configuration binary cache for Nix 
 Add our [GitHub Action][action] after installing Nix, in your workflow, like this:
 
 ```yaml
-- uses: DeterminateSystems/magic-nix-cache-action@main
+- uses: DeterminateSystems/flakehub-cache-action@main
 ```
 
 See [Usage](#usage) for a detailed example.
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flakehub-cache-action@main
       - uses: DeterminateSystems/flake-checker-action@main
       - name: Run `nix build`
         run: nix build .
@@ -80,7 +80,7 @@ When you configure an upstream cache for the Magic Nix Cache, any store paths fe
 The default is `https://cache.nixos.org` but you can set a different upstream:
 
 ```yaml
-- uses: DeterminateSystems/magic-nix-cache-action@main
+- uses: DeterminateSystems/flakehub-cache-action@main
   with:
     upstream-cache: https://my-binary-cache.com
 ```
@@ -91,28 +91,28 @@ The default is `https://cache.nixos.org` but you can set a different upstream:
 cat action.yml| nix run nixpkgs#yq-go -- '[[ "Parameter", "Description", "Required", "Default" ], ["-", "-", "-", "-"]] + [.inputs | to_entries | sort_by(.key) | .[] | ["`" + .key + "`", .value.description, .value.required // "", .value.default // ""]] | map(join(" | ")) | .[] | "| " + . + " |"' -r
 -->
 
-| Parameter                   | Description                                                                                                     | Required | Default                                                  |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------- |
-| `diagnostic-endpoint`       | Diagnostic endpoint url where diagnostics and performance data is sent. To disable set this to an empty string. |          | https://install.determinate.systems/magic-nix-cache/perf |
-| `diff-store`                | Whether or not to diff the store before and after Magic Nix Cache runs.                                         |          | `false`                                                  |
-| `flakehub-api-server`       | The FlakeHub API server.                                                                                        |          | https://api.flakehub.com                                 |
-| `flakehub-cache-server`     | The FlakeHub binary cache server.                                                                               |          | https://cache.flakehub.com                               |
-| `flakehub-flake-name`       | The name of your flake on FlakeHub. The empty string will autodetect your FlakeHub flake.                       |          | `""`                                                     |
-| `listen`                    | The host and port to listen on.                                                                                 |          | 127.0.0.1:37515                                          |
-| `source-binary`             | Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.  |          |                                                          |
-| `source-branch`             | The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                            |          | main                                                     |
-| `source-pr`                 | The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                |          |                                                          |
-| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                      |          |                                                          |
-| `source-tag`                | The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                               |          |                                                          |
-| `source-url`                | A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.                           |          |                                                          |
-| `startup-notification-port` | The port magic-nix-cache uses for daemon startup notification.                                                  |          | 41239                                                    |
-| `upstream-cache`            | Your preferred upstream cache. Store paths in this store will not be cached in GitHub Actions' cache.           |          | https://cache.nixos.org                                  |
-| `use-flakehub`              | Whether to upload build results to FlakeHub Cache (private beta).                                               |          | true                                                     |
-| `use-gha-cache`             | Whether to upload build results to the GitHub Actions cache.                                                    |          | true                                                     |
+| Parameter                   | Description                                                                                                     | Required | Default                                                 |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------- | -------- | ------------------------------------------------------- |
+| `diagnostic-endpoint`       | Diagnostic endpoint url where diagnostics and performance data is sent. To disable set this to an empty string. |          | https://install.determinate.systems/flakehub-cache/perf |
+| `diff-store`                | Whether or not to diff the store before and after Magic Nix Cache runs.                                         |          | `false`                                                 |
+| `flakehub-api-server`       | The FlakeHub API server.                                                                                        |          | https://api.flakehub.com                                |
+| `flakehub-cache-server`     | The FlakeHub binary cache server.                                                                               |          | https://cache.flakehub.com                              |
+| `flakehub-flake-name`       | The name of your flake on FlakeHub. The empty string will autodetect your FlakeHub flake.                       |          | `""`                                                    |
+| `listen`                    | The host and port to listen on.                                                                                 |          | 127.0.0.1:37515                                         |
+| `source-binary`             | Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.  |          |                                                         |
+| `source-branch`             | The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                            |          | main                                                    |
+| `source-pr`                 | The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                |          |                                                         |
+| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                      |          |                                                         |
+| `source-tag`                | The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                               |          |                                                         |
+| `source-url`                | A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.                           |          |                                                         |
+| `startup-notification-port` | The port magic-nix-cache uses for daemon startup notification.                                                  |          | 41239                                                   |
+| `upstream-cache`            | Your preferred upstream cache. Store paths in this store will not be cached in GitHub Actions' cache.           |          | https://cache.nixos.org                                 |
+| `use-flakehub`              | Whether to upload build results to FlakeHub Cache (private beta).                                               |          | true                                                    |
+| `use-gha-cache`             | Whether to upload build results to the GitHub Actions cache.                                                    |          | true                                                    |
 
 [gha-cache]: https://docs.github.com/en/rest/actions/cache
 [detsys]: https://determinate.systems/
-[action]: https://github.com/DeterminateSystems/magic-nix-cache-action/
+[action]: https://github.com/DeterminateSystems/flakehub-cache-action/
 [installer]: https://github.com/DeterminateSystems/nix-installer/
 [ghacache]: https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows
 [privacy]: https://determinate.systems/policies/privacy

@@ -84803,7 +84803,7 @@ async function netrcPath() {
   } catch {
     const destinedNetrcPath = external_node_path_namespaceObject.join(
       process.env["RUNNER_TEMP"] ?? external_node_os_.tmpdir(),
-      "magic-nix-cache-netrc"
+      "flakehub-cache-netrc"
     );
     try {
       await flakeHubLogin(destinedNetrcPath);
@@ -84854,10 +84854,10 @@ var STARTED_HINT = "true";
 var TEXT_ALREADY_RUNNING = "Magic Nix Cache is already running, this workflow job is in noop mode. Is the Magic Nix Cache in the workflow twice?";
 var TEXT_TRUST_UNTRUSTED = "The Nix daemon does not consider the user running this workflow to be trusted. Magic Nix Cache is disabled.";
 var TEXT_TRUST_UNKNOWN = "The Nix daemon may not consider the user running this workflow to be trusted. Magic Nix Cache may not start correctly.";
-var MagicNixCacheAction = class extends DetSysAction {
+var FlakeHubCacheAction = class extends DetSysAction {
   constructor() {
     super({
-      name: "magic-nix-cache",
+      name: "flakehub-cache",
       fetchStyle: "gh-env-style",
       idsProjectName: "magic-nix-cache-closure",
       requireNix: "warn",
@@ -85119,7 +85119,7 @@ var MagicNixCacheAction = class extends DetSysAction {
         await (0,external_node_timers_promises_namespaceObject.setTimeout)(100);
       }
       this.addFact(FACT_SENT_SIGTERM, true);
-      core.info(`Sending Magic Nix Cache a SIGTERM`);
+      core.info(`Sending magic-nix-cache a SIGTERM`);
       process.kill(pid, "SIGTERM");
     } catch {
     }
@@ -85147,7 +85147,7 @@ var MagicNixCacheAction = class extends DetSysAction {
   }
 };
 function main() {
-  new MagicNixCacheAction().execute();
+  new FlakeHubCacheAction().execute();
 }
 main();
 //# sourceMappingURL=index.js.map

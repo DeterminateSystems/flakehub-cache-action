@@ -52,7 +52,7 @@ export async function netrcPath(): Promise<string> {
     // `nix-installer` was not used, the user may be registered with FlakeHub though.
     const destinedNetrcPath = path.join(
       process.env["RUNNER_TEMP"] ?? os.tmpdir(),
-      "magic-nix-cache-netrc",
+      "flakehub-cache-netrc",
     );
     try {
       await flakeHubLogin(destinedNetrcPath);
