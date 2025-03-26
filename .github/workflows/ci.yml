@@ -119,6 +119,7 @@ jobs:
   success:
     runs-on: ubuntu-latest
     needs: run-systems
+    if: always()
     steps:
       - run: "true"
       - run: |
