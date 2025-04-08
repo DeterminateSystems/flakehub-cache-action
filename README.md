@@ -53,24 +53,24 @@ cat action.yml| nix run nixpkgs#yq-go -- '[[ "Parameter", "Description", "Requir
 
 | Parameter                   | Description                                                                                                    | Required | Default                    |
 | --------------------------- | -------------------------------------------------------------------------------------------------------------- | -------- | -------------------------- |
-| `diff-store`                | Whether or not to diff the store before and after `magic-nix-cache` runs                                       |          |                            |
+| `diff-store`                | Whether or not to diff the store before and after `flakehub-cache-action` runs                                 |          |                            |
 | `flakehub-api-server`       | The FlakeHub API server.                                                                                       |          | https://api.flakehub.com   |
 | `flakehub-cache-server`     | The FlakeHub binary cache server.                                                                              |          | https://cache.flakehub.com |
 | `flakehub-flake-name`       | The name of your flake on FlakeHub. The empty string will autodetect your FlakeHub flake.                      |          |                            |
 | `listen`                    | The host and port to listen on.                                                                                |          | 127.0.0.1:37515            |
 | `source-binary`             | Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options. |          |                            |
-| `source-branch`             | The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                           |          |                            |
-| `source-pr`                 | The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                               |          |                            |
-| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                     |          |                            |
-| `source-tag`                | The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                              |          |                            |
-| `source-url`                | A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.                          |          |                            |
-| `startup-notification-port` | The port magic-nix-cache uses for daemon startup notification.                                                 |          | 41239                      |
+| `source-branch`             | The branch of `flakehub-cache-action` to use. Conflicts with all other `source-*` options.                     |          |                            |
+| `source-pr`                 | The PR of `flakehub-cache-action` to use. Conflicts with all other `source-*` options.                         |          |                            |
+| `source-revision`           | The revision of `nix-flakehub-cache-action` to use. Conflicts with all other `source-*` options.               |          |                            |
+| `source-tag`                | The tag of `flakehub-cache-action` to use. Conflicts with all other `source-*` options.                        |          |                            |
+| `source-url`                | A URL pointing to a `flakehub-cache-action` binary. Overrides all other `source-*` options.                    |          |                            |
+| `startup-notification-port` | The port flakehub-cache-action uses for daemon startup notification.                                           |          | 41239                      |
 
 [detsys]: https://determinate.systems/
 [action]: https://github.com/DeterminateSystems/flakehub-cache-action/
 [installer]: https://github.com/DeterminateSystems/nix-installer/
 [privacy]: https://determinate.systems/policies/privacy
-[telemetry]: https://github.com/DeterminateSystems/magic-nix-cache/blob/main/magic-nix-cache/src/telemetry.rs
+[telemetry]: https://github.com/DeterminateSystems/flakehub-cache-action/blob/main/flakehub-cache-action/src/telemetry.rs
 [z2ncache]: https://zero-to-nix.com/concepts/caching#binary-caches
 [zhaofeng]: https://github.com/zhaofengli/
 [z2n]: https://zero-to-nix.com
