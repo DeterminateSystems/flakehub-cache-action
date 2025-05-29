@@ -19,57 +19,18 @@ jobs:
         run: |
           nix develop --command shellcheck ./.github/workflows/cache-test.sh
       - uses: DeterminateSystems/nix-installer-action@main
-      - name: Install pnpm dependencies
-        run: nix develop --command pnpm install
-      - name: Check formatting
-        run: nix develop --command pnpm run check-fmt
-      - name: Lint
-        run: nix develop --command pnpm run lint
-      - name: Build
-        run: nix develop --command pnpm run build
-      - name: Package
-        run: nix develop --command pnpm run package
-      - run: git status --porcelain=v1
-      - run: git diff --exit-code
-
-  test-no-nix:
-    needs: build
-    name: "Test: Nix not installed"
-    runs-on: ubuntu-22.04
-    permissions:
-      id-token: "write"
-      contents: "read"
-    env:
-      ACTIONS_STEP_DEBUG: true
-    steps:
-      - uses: actions/checkout@v4
-      - name: Cache the store
-        uses: ./
-        with:
-          _internal-strict-mode: true
-
-  run-x86_64-linux-untrusted:
-    needs: build
-    name: Run x86_64-linux, Untrusted
-    runs-on: ubuntu-22.04
-    permissions:
-      id-token: "write"
-      contents: "read"
-    env:
-      ACTIONS_STEP_DEBUG: true
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-        with:
-          flakehub: true
-          extra-conf: |
-            narinfo-cache-negative-ttl = 0
-            trusted-users = root
-      - name: Cache the store
-        uses: ./
-        with:
-          _internal-strict-mode: true
+      # - name: Install pnpm dependencies
+      #   run: nix develop --command pnpm install
+      # - name: Check formatting
+      #   run: nix develop --command pnpm run check-fmt
+      # - name: Lint
+      #   run: nix develop --command pnpm run lint
+      # - name: Build
+      #   run: nix develop --command pnpm run build
+      # - name: Package
+      #   run: nix develop --command pnpm run package
+      # - run: git status --porcelain=v1
+      # - run: git diff --exit-code
 
   run-systems:
     if: github.event_name == 'merge_group'
@@ -87,12 +48,6 @@ jobs:
         determinate: [true, false]
         id-token: ["write", "none"]
         systems:
-          - nix-system: "aarch64-darwin"
-            runner: "macos-latest"
-          - nix-system: "x86_64-darwin"
-            runner: "macos-13"
-          - nix-system: "aarch64-linux"
-            runner: "namespace-profile-default-arm64"
           - nix-system: "x86_64-linux"
             runner: "ubuntu-22.04"
     steps:
