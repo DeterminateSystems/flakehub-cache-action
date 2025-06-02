@@ -1,14 +1,14 @@
-import { netrcPath, tailLog } from "./helpers.js";
-import * as actionsCore from "@actions/core";
-import * as actionsGithub from "@actions/github";
-import { DetSysAction, inputs, stringifyError } from "detsys-ts";
-import got, { Got, Response } from "got";
 import * as http from "http";
 import { SpawnOptions, spawn } from "node:child_process";
 import { mkdirSync, openSync, readFileSync } from "node:fs";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { setTimeout } from "node:timers/promises";
+import * as actionsCore from "@actions/core";
+import * as actionsGithub from "@actions/github";
+import { DetSysAction, inputs, stringifyError } from "detsys-ts";
+import got, { Got, Response } from "got";
+import { netrcPath, tailLog } from "./helpers.js";
 
 // The ENV_DAEMON_DIR is intended to determine if we "own" the daemon or not,
 // in the case that a user has put the magic nix cache into their workflow
