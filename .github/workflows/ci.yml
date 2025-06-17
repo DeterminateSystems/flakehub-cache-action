@@ -50,6 +50,7 @@ jobs:
       contents: "read"
     steps:
       - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
       - uses: ./.
       - run: nix develop -c typos
         if: success() || failure()
