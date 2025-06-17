@@ -93,7 +93,8 @@ result = {
 
 readme_table_marker = "<!-- table -->"
 readme_checkout_action_tag_marker = "<!-- checkout_action_tag -->"
-readme_version_marker = "<!-- version -->"
+readme_version_major_marker = "<!-- version_major -->"
+readme_version_minor_marker = "<!-- version_minor -->"
 
 faults = []
 
@@ -110,10 +111,12 @@ with open(state_file) as fp:
 eprintln(f"State: {state}")
 checkout_action_tag =  state['checkout_action_tag']
 upstream_action_revision = state['upstream_action_revision']
-source_tag = state['source_tag']
+binary_revision = state['binary_revision']
+self_version_minor = state['self_version']
+self_version_major = self_version_minor.split(".")[0]
 
 # these are printed in argument order
-eprintln(f"Source tag: {source_tag}")
+eprintln(f"Binary revision: {binary_revision}")
 eprintln(f"Upstream Action revision: {upstream_action_revision}")
 eprintln(f"Checkout Action tag: {checkout_action_tag}")
 eprintln(f"Source action json doc: {source_file}")
@@ -178,11 +181,11 @@ if source != {}:
     )
 
 try:
-    # Set the default source-tag to the currently released tag
-    result["inputs"]["source-tag"]["default"] = source_tag
+    # Set the default source-revision to the currently released rev
+    result["inputs"]["source-revision"]["default"] = binary_revision
 except KeyError as e:
     pprint(e)
-    faults.append(f"Input action has no source-tag input, or it is not in the keep_inputs list: {e}")
+    faults.append(f"Input action has no source-revision input, or it is not in the keep_inputs list: {e}")
 
 # Generate a README from the inputs
 table = make_inputs_table(result["inputs"])
@@ -201,9 +204,13 @@ with open(readme_template) as fp:
         faults.append(
             f"Replacement template marker `{readme_table_marker}` is not present in {readme_template}."
         )
-    if readme_version_marker not in template:
+    if readme_version_major_marker not in template:
         faults.append(
-            f"Replacement template marker `{readme_version_marker}` is not present in {readme_template}."
+            f"Replacement template marker `{readme_version_major_marker}` is not present in {readme_template}."
+        )
+    if readme_version_minor_marker not in template:
+        faults.append(
+            f"Replacement template marker `{readme_version_minor_marker}` is not present in {readme_template}."
         )
 
     if readme_checkout_action_tag_marker not in template:
@@ -226,6 +233,7 @@ eprintln(f"Writing out the README.md to {output_readme}")
 with open(output_readme, "w") as fp:
     fp.write(
         template.replace(readme_table_marker, table)
-        .replace(readme_version_marker, source_tag)
+        .replace(readme_version_major_marker, self_version_major)
+        .replace(readme_version_minor_marker, self_version_minor)
         .replace(readme_checkout_action_tag_marker, checkout_action_tag)
     )

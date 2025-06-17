@@ -1,6 +1,6 @@
 {
   "upstream_action_revision": "def9f5a5c6a6b8751c0534e8813a5d0ad2635660",
-  "source_tag": "2.1",
+  "self_version": "v2.1",
   "binary_revision": "c79f1550609d4e9c4065a27fd599e76a94e0278d",
   "checkout_action_tag": "v4.2.2"
 }

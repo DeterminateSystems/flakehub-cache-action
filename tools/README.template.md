@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@<!-- checkout_action_tag -->
       - uses: DeterminateSystems/determinate-nix-action@v3
-      - uses: DeterminateSystems/flakehub-cache-action@v3 # or <!-- version --> to pin to a release
+      - uses: DeterminateSystems/flakehub-cache-action@<!-- version_major --> # or <!-- version_minor --> to pin to a release
       - run: nix build .
 ```
 
@@ -65,7 +65,7 @@ jobs:
 Unlike `DeterminateSystems/magic-nix-cache-action`, we fully support explicit version pinning for maximum consistency.
 This Action is **automatically tagged** for every release, giving you complete control over your CI environment:
 
-📍 Pinning to `DeterminateSystems/flakehub-cache-action@<!-- version -->` guarantees:
+📍 Pinning to `DeterminateSystems/flakehub-cache-action@<!-- version_minor -->` guarantees:
 
 - Same `flakehub-cache-action` revision every time
 - Reproducible CI workflows, even years later

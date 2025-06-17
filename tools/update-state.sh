@@ -2,7 +2,7 @@
 
 set -eux
 
-MAGIC_NIX_CACHE_TAG=$1
+ACTION_TAG=$1
 REPO="DeterminateSystems/magic-nix-cache-action"
 
 default_branch() {
@@ -54,7 +54,7 @@ main() {
 
     jq -n '$ARGS.named' \
         --arg upstream_action_revision "$revision" \
-        --arg "source_tag" "$MAGIC_NIX_CACHE_TAG" \
+        --arg "self_version" "$ACTION_TAG" \
         --arg "binary_revision" "$mnc_binary_rev" \
         --arg "checkout_action_tag" "$checkout_tag" \
         | cat > tools/state.json
