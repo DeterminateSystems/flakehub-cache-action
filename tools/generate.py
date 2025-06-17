@@ -72,10 +72,7 @@ keep_inputs = [
     "_internal-strict-mode",
 ]
 
-discard_inputs = [
-    "use-flakehub"
-
-]
+discard_inputs = ["use-flakehub"]
 
 result = {
     "name": "FlakeHub Cache",
@@ -109,10 +106,10 @@ state_file = sys.argv.pop()
 with open(state_file) as fp:
     state = json.load(fp)
 eprintln(f"State: {state}")
-checkout_action_tag =  state['checkout_action_tag']
-upstream_action_revision = state['upstream_action_revision']
-binary_revision = state['binary_revision']
-self_version_minor = state['self_version']
+checkout_action_tag = state["checkout_action_tag"]
+upstream_action_revision = state["upstream_action_revision"]
+binary_revision = state["binary_revision"]
+self_version_minor = state["self_version"]
 self_version_major = self_version_minor.split(".")[0]
 
 # these are printed in argument order
@@ -123,8 +120,6 @@ eprintln(f"Source action json doc: {source_file}")
 eprintln(f"Target action.yml: {output_action}")
 eprintln(f"Readme template file: {readme_template}")
 eprintln(f"Target readme: {output_readme}")
-
-
 
 
 with open(source_file) as fp:
@@ -185,7 +180,9 @@ try:
     result["inputs"]["source-revision"]["default"] = binary_revision
 except KeyError as e:
     pprint(e)
-    faults.append(f"Input action has no source-revision input, or it is not in the keep_inputs list: {e}")
+    faults.append(
+        f"Input action has no source-revision input, or it is not in the keep_inputs list: {e}"
+    )
 
 # Generate a README from the inputs
 table = make_inputs_table(result["inputs"])

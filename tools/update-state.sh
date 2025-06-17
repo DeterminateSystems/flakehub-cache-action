@@ -31,7 +31,7 @@ magic_nix_cache_binary_rev() {
     echo "Checking to see if $sha for magic-nix-cache has binaries yet..."
     for arch in ARM64-macOS X64-macOS X64-Linux ARM64-Linux; do
       curl -LI --fail \
-        https://install.determinate.systems/magic-nix-cache/rev/$sha/$arch
+        "https://install.determinate.systems/magic-nix-cache/rev/$sha/$arch"
     done
   ) >&2
 
