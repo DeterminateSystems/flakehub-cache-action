@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-systems:
-    if: github.event_name == 'merge_group'
+    # if: github.event_name == 'merge_group'
     name: "Test: ${{ matrix.systems.nix-system }}"
     runs-on: "${{ matrix.systems.runner }}"
     permissions:
