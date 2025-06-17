@@ -15,13 +15,8 @@ is_gh_throttled() {
 }
 
 # Check that the action initialized correctly.
-if [ "$EXPECT_FLAKEHUB" == "true" ]; then
-  grep 'FlakeHub cache is enabled' "${log}"
-  grep 'Using cache' "${log}"
-else
-  grep 'FlakeHub cache is disabled' "${log}" \
-  || grep 'FlakeHub: cache initialized failed' "${log}"
-fi
+grep 'FlakeHub cache is enabled' "${log}"
+grep 'Using cache' "${log}"
 
 if [ "$EXPECT_GITHUB_CACHE" == "true" ]; then
   grep 'GitHub Action cache is enabled' "${log}"
@@ -33,19 +28,17 @@ fi
 outpath=$(nix-build .github/workflows/cache-tester.nix --argstr seed "$seed")
 
 # Wait until it has been pushed succesfully.
-if [ "$EXPECT_FLAKEHUB" == "true" ]; then
-  found=
-  for ((i = 0; i < 60; i++)); do
-      sleep 1
-      if grep "✅ $(basename "${outpath}")" "${log}"; then
-          found=1
-          break
-      fi
-  done
-  if [[ -z $found ]]; then
-      echo "FlakeHub push did not happen." >&2
-      exit 1
-  fi
+found=
+for ((i = 0; i < 60; i++)); do
+    sleep 1
+    if grep "✅ $(basename "${outpath}")" "${log}"; then
+        found=1
+        break
+    fi
+done
+if [[ -z $found ]]; then
+    echo "FlakeHub push did not happen." >&2
+    exit 1
 fi
 
 if [ "$EXPECT_GITHUB_CACHE" == "true" ]; then
@@ -68,10 +61,8 @@ fi
 
 
 
-if [ "$EXPECT_FLAKEHUB" == "true" ]; then
-  # Check the FlakeHub binary cache to see if the path is really there.
-  nix path-info --store "${flakehub_binary_cache}" "${outpath}"
-fi
+# Check the FlakeHub binary cache to see if the path is really there.
+nix path-info --store "${flakehub_binary_cache}" "${outpath}"
 
 if [ "$EXPECT_GITHUB_CACHE" == "true" ] && ! is_gh_throttled; then
   # Check the GitHub binary cache to see if the path is really there.
@@ -91,16 +82,12 @@ echo "-------"
 echo "Trying to substitute the build again..."
 echo "if it fails, the cache is broken."
 
-if [ "$EXPECT_FLAKEHUB" == "true" ]; then
-  # Check the FlakeHub binary cache to see if the path is really there.
-  nix path-info --store "${flakehub_binary_cache}" "${outpath}"
-fi
+# Check the FlakeHub binary cache to see if the path is really there.
+nix path-info --store "${flakehub_binary_cache}" "${outpath}"
 
 if [ "$EXPECT_GITHUB_CACHE" == "true" ] && ! is_gh_throttled; then
   # Check the FlakeHub binary cache to see if the path is really there.
   nix path-info --store "${gha_binary_cache}" "${outpath}"
 fi
 
-if ([ "$EXPECT_GITHUB_CACHE" == "true" ] && ! is_gh_throttled) || [ "$EXPECT_FLAKEHUB" == "true" ]; then
-  nix-store --realize -vvvvvvvv "$outpath"
-fi
+nix-store --realize -vvvvvvvv "$outpath"

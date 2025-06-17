@@ -1,57 +1,106 @@
-name: FlakeHub Cache
-branding:
-  icon: "box"
-  color: "purple"
-description: "Free, no-configuration Nix cache. Cut CI time by 50% or more by caching to GitHub Actions' cache."
-inputs:
-  listen:
-    description: The host and port to listen on.
-    default: 127.0.0.1:37515
-  diagnostic-endpoint:
-    description: "Diagnostic endpoint url where diagnostics and performance data is sent. To disable set this to an empty string."
-    default: "-"
-  flakehub-cache-server:
-    description: "The FlakeHub binary cache server."
-    default: "https://cache.flakehub.com"
-  flakehub-api-server:
-    description: "The FlakeHub API server."
-    default: "https://api.flakehub.com"
-  flakehub-flake-name:
-    description: "The name of your flake on FlakeHub. The empty string will autodetect your FlakeHub flake."
-    default: ""
-    required: false
-  startup-notification-port:
-    description: "The port magic-nix-cache uses for daemon startup notification."
-    default: 41239
-  diff-store:
-    description: "Whether or not to diff the store before and after Magic Nix Cache runs"
-    default: false
-    required: false
-
-  source-binary:
-    description: Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.
-    required: false
-  source-branch:
-    description: The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.
-    required: false
-  source-pr:
-    description: The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.
-    required: false
-  source-revision:
-    description: The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.
-    required: false
-  source-tag:
-    description: The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.
-    required: false
-  source-url:
-    description: A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.
-    required: false
-  _internal-strict-mode:
-    description: Whether to fail when any errors are thrown. Used only to test the Action; do not set this in your own workflows.
-    required: false
-    default: false
-
-runs:
-  using: "node20"
-  main: "./dist/index.js"
-  post: "./dist/index.js"
+{
+    "name": "FlakeHub Cache",
+    "description": "Use FlakeHub Cache, zero-configuration binary cache for Nix on GitHub Actions. See: https://flakehub.com/cache",
+    "branding": {
+        "icon": "box",
+        "color": "rainbow"
+    },
+    "inputs": {
+        "use-gha-cache": {
+            "description": "Whether to upload build results to the Github Actions cache.\nSet to \"no-preference\" or null to have the GitHub Actions cache turn on if it is available, and FlakeHub Cache is not available (default).\nSet to \"enabled\" or true to explicitly request the GitHub Actions Cache.\nSet to \"disabled\" or false to explicitly disable the GitHub Actions Cache.\n",
+            "default": null,
+            "required": false
+        },
+        "flakehub-flake-name": {
+            "description": "The name of your flake on FlakeHub. The empty string will autodetect your FlakeHub flake.",
+            "default": "",
+            "required": false
+        },
+        "diff-store": {
+            "description": "Whether or not to diff the store before and after Magic Nix Cache runs",
+            "default": false,
+            "required": false
+        },
+        "startup-notification-port": {
+            "description": "The port magic-nix-cache uses for daemon startup notification.",
+            "default": 41239
+        },
+        "listen": {
+            "description": "The host and port to listen on.",
+            "default": "127.0.0.1:37515"
+        },
+        "upstream-cache": {
+            "description": "Your preferred upstream cache. Store paths in this store will not be cached in GitHub Actions' cache.",
+            "default": "https://cache.nixos.org"
+        },
+        "diagnostic-endpoint": {
+            "description": "Diagnostic endpoint url where diagnostics and performance data is sent. To disable set this to an empty string.",
+            "default": "-"
+        },
+        "source-binary": {
+            "description": "Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.",
+            "required": false
+        },
+        "source-branch": {
+            "description": "The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.",
+            "required": false
+        },
+        "source-pr": {
+            "description": "The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.",
+            "required": false
+        },
+        "source-revision": {
+            "description": "The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.",
+            "required": false,
+            "default": "c79f1550609d4e9c4065a27fd599e76a94e0278d"
+        },
+        "source-tag": {
+            "description": "The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.",
+            "required": false
+        },
+        "source-url": {
+            "description": "A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.",
+            "required": false
+        },
+        "flakehub-cache-server": {
+            "description": "The FlakeHub binary cache server.",
+            "default": "https://cache.flakehub.com"
+        },
+        "flakehub-api-server": {
+            "description": "The FlakeHub API server.",
+            "default": "https://api.flakehub.com"
+        },
+        "_internal-strict-mode": {
+            "description": "Whether to fail when any errors are thrown. Used only to test the Action; do not set this in your own workflows.",
+            "required": false,
+            "default": false
+        }
+    },
+    "runs": {
+        "using": "composite",
+        "steps": [
+            {
+                "uses": "DeterminateSystems/magic-nix-cache-action@def9f5a5c6a6b8751c0534e8813a5d0ad2635660",
+                "with": {
+                    "use-gha-cache": "${{ inputs.use-gha-cache }}",
+                    "flakehub-flake-name": "${{ inputs.flakehub-flake-name }}",
+                    "diff-store": "${{ inputs.diff-store }}",
+                    "startup-notification-port": "${{ inputs.startup-notification-port }}",
+                    "listen": "${{ inputs.listen }}",
+                    "upstream-cache": "${{ inputs.upstream-cache }}",
+                    "diagnostic-endpoint": "${{ inputs.diagnostic-endpoint }}",
+                    "source-binary": "${{ inputs.source-binary }}",
+                    "source-branch": "${{ inputs.source-branch }}",
+                    "source-pr": "${{ inputs.source-pr }}",
+                    "source-revision": "${{ inputs.source-revision }}",
+                    "source-tag": "${{ inputs.source-tag }}",
+                    "source-url": "${{ inputs.source-url }}",
+                    "flakehub-cache-server": "${{ inputs.flakehub-cache-server }}",
+                    "flakehub-api-server": "${{ inputs.flakehub-api-server }}",
+                    "_internal-strict-mode": "${{ inputs._internal-strict-mode }}",
+                    "use-flakehub": true
+                }
+            }
+        ]
+    }
+}

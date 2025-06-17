@@ -1,5 +1,3 @@
-name: CI
-
 on:
   merge_group:
   pull_request:
@@ -7,74 +5,9 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/flakehub-cache-action@main
-      - name: Check shell scripts
-        run: |
-          nix develop --command shellcheck ./.github/workflows/cache-test.sh
-      - uses: DeterminateSystems/nix-installer-action@main
-      - name: Install pnpm dependencies
-        run: nix develop --command pnpm install
-      - name: Check formatting
-        run: nix develop --command pnpm run check-fmt
-      - name: Lint
-        run: nix develop --command pnpm run lint
-      - name: Build
-        run: nix develop --command pnpm run build
-      - name: Package
-        run: nix develop --command pnpm run package
-      - run: git status --porcelain=v1
-      - run: git diff --exit-code
-
-  test-no-nix:
-    needs: build
-    name: "Test: Nix not installed"
-    runs-on: ubuntu-22.04
-    permissions:
-      id-token: "write"
-      contents: "read"
-    env:
-      ACTIONS_STEP_DEBUG: true
-    steps:
-      - uses: actions/checkout@v4
-      - name: Cache the store
-        uses: ./
-        with:
-          _internal-strict-mode: true
-
-  run-x86_64-linux-untrusted:
-    needs: build
-    name: Run x86_64-linux, Untrusted
-    runs-on: ubuntu-22.04
-    permissions:
-      id-token: "write"
-      contents: "read"
-    env:
-      ACTIONS_STEP_DEBUG: true
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
-        with:
-          flakehub: true
-          extra-conf: |
-            narinfo-cache-negative-ttl = 0
-            trusted-users = root
-      - name: Cache the store
-        uses: ./
-        with:
-          _internal-strict-mode: true
-
   run-systems:
-    if: github.event_name == 'merge_group'
-    needs: build
-    name: "Test: ${{ matrix.systems.nix-system }} gha:${{matrix.use-gha-cache}},fhc:${{matrix.use-flakehub}},id:${{matrix.id-token}},determinate:${{matrix.determinate}}"
+    # if: github.event_name == 'merge_group'
+    name: "Test: ${{ matrix.systems.nix-system }}"
     runs-on: "${{ matrix.systems.runner }}"
     permissions:
       id-token: "write"
@@ -84,8 +17,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        determinate: [true, false]
-        id-token: ["write", "none"]
         systems:
           - nix-system: "aarch64-darwin"
             runner: "macos-latest"
@@ -98,27 +29,50 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Nix on ${{ matrix.systems.nix-system }} system
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/determinate-nix-action@main
         with:
-          _internal-obliterate-actions-id-token-request-variables: ${{ matrix.id-token == 'none' }}
-          determinate: ${{ matrix.determinate }}
           extra-conf: |
             narinfo-cache-negative-ttl = 0
       - name: Cache the store
         uses: ./
         with:
           _internal-strict-mode: true
-          _internal-obliterate-actions-id-token-request-variables: ${{ matrix.id-token == 'none' }}
       - name: Check the cache for liveness
         env:
-          EXPECT_FLAKEHUB: ${{ toJson(matrix.id-token == 'write') }}
           EXPECT_GITHUB_CACHE: ${{ toJson(false) }}
         run: |
           .github/workflows/cache-test.sh
 
+  lint:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: "write"
+      contents: "read"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - uses: ./.
+      - run: nix develop -c typos
+        if: success() || failure()
+      - run: nix develop -c ruff check
+        if: success() || failure()
+      - run: nix develop -c ruff format --diff
+        if: success() || failure()
+      - run: nix develop -c shellcheck ./tools/*.sh
+        if: success() || failure()
+      - name: Regenerate the README to make sure it is unchanged
+        run: nix develop -c ./tools/generate.sh
+        if: success() || failure()
+      - name: Assert no changes were made
+        run: git diff --exit-code
+        if: success() || failure()
+
   success:
     runs-on: ubuntu-latest
-    needs: run-systems
+    needs:
+      - run-systems
+      - lint
     if: always()
     steps:
       - run: "true"
