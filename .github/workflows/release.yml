@@ -1,7 +1,8 @@
 on:
+  workflow_dispatch:
   release:
     types:
-      - released
+      - published
 
 jobs:
   PushLooseTag:
