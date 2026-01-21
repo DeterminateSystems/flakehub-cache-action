@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.1
       - uses: DeterminateSystems/determinate-nix-action@v3
-      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.15.1 to pin to a release
+      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.15.2 to pin to a release
       - run: nix build .
 ```
 
@@ -65,7 +65,7 @@ jobs:
 Unlike `DeterminateSystems/magic-nix-cache-action`, we fully support explicit version pinning for maximum consistency.
 This Action is **automatically tagged** for every release, giving you complete control over your CI environment:
 
-📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.15.1` guarantees:
+📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.15.2` guarantees:
 
 - Same `flakehub-cache-action` revision every time
 - Reproducible CI workflows, even years later
@@ -109,7 +109,7 @@ Set to "disabled" or false to explicitly disable the GitHub Actions Cache.
 | `source-binary`             | Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                               |          |                                            |
 | `source-branch`             | The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                         |          |                                            |
 | `source-pr`                 | The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                             |          |                                            |
-| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                   |          | `4b5df5f2f2393f10fc346297a46deec91a5969e0` |
+| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                   |          | `93bcd50961a03a468b29fac9d96b7efd037cb507` |
 | `source-tag`                | The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                            |          |                                            |
 | `source-url`                | A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.                                                                                                                                                                                                                                                                        |          |                                            |
 | `flakehub-cache-server`     | The FlakeHub binary cache server.                                                                                                                                                                                                                                                                                                                            |          | `https://cache.flakehub.com`               |
