@@ -80,7 +80,7 @@
         "using": "composite",
         "steps": [
             {
-                "uses": "DeterminateSystems/magic-nix-cache-action@18f387d6764e62a1ef95201d3ad9d594a2b0a455",
+                "uses": "DeterminateSystems/magic-nix-cache-action@61574a7f2bd30303aa02b97bc1e9fb4a2bdfeda4",
                 "with": {
                     "use-gha-cache": "${{ inputs.use-gha-cache }}",
                     "flakehub-flake-name": "${{ inputs.flakehub-flake-name }}",
