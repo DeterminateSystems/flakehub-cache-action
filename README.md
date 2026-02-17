@@ -24,7 +24,7 @@ Based on the [Determinate Nix Installer][nix-installer] and its corresponding [N
 - Cached paths are available on developer and target machines
 - Fully managed by Determinate Systems
 - 🐧 Linux, x86_64, aarch64
-- 🍏 macOS, x86_64 and aarch64
+- 🍏 macOS (Apple Silicon)
 - 🪟 WSL2, x86_64 and aarch64
 - 🐋 Containers, ARC, and Act
 - 🐙 GitHub Enterprise Server
@@ -49,9 +49,9 @@ jobs:
       id-token: "write"
       contents: "read"
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
       - uses: DeterminateSystems/determinate-nix-action@v3
-      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.15.2 to pin to a release
+      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.16.0 to pin to a release
       - run: nix build .
 ```
 
@@ -65,7 +65,7 @@ jobs:
 Unlike `DeterminateSystems/magic-nix-cache-action`, we fully support explicit version pinning for maximum consistency.
 This Action is **automatically tagged** for every release, giving you complete control over your CI environment:
 
-📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.15.2` guarantees:
+📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.16.0` guarantees:
 
 - Same `flakehub-cache-action` revision every time
 - Reproducible CI workflows, even years later
@@ -109,7 +109,7 @@ Set to "disabled" or false to explicitly disable the GitHub Actions Cache.
 | `source-binary`             | Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                               |          |                                            |
 | `source-branch`             | The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                         |          |                                            |
 | `source-pr`                 | The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                             |          |                                            |
-| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                   |          | `93bcd50961a03a468b29fac9d96b7efd037cb507` |
+| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                   |          | `356fa104ad4319d35d11e1e948e42ef93d7e0797` |
 | `source-tag`                | The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                            |          |                                            |
 | `source-url`                | A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.                                                                                                                                                                                                                                                                        |          |                                            |
 | `flakehub-cache-server`     | The FlakeHub binary cache server.                                                                                                                                                                                                                                                                                                                            |          | `https://cache.flakehub.com`               |

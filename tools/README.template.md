@@ -24,7 +24,7 @@ Based on the [Determinate Nix Installer][nix-installer] and its corresponding [N
 - Cached paths are available on developer and target machines
 - Fully managed by Determinate Systems
 - 🐧 Linux, x86_64, aarch64
-- 🍏 macOS, x86_64 and aarch64
+- 🍏 macOS (Apple Silicon)
 - 🪟 WSL2, x86_64 and aarch64
 - 🐋 Containers, ARC, and Act
 - 🐙 GitHub Enterprise Server
