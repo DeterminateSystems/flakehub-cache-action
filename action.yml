@@ -52,7 +52,7 @@
         "source-revision": {
             "description": "The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.",
             "required": false,
-            "default": "356fa104ad4319d35d11e1e948e42ef93d7e0797"
+            "default": "628eb144863e65824c8463d70b118f98a09e9590"
         },
         "source-tag": {
             "description": "The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.",
@@ -80,7 +80,7 @@
         "using": "composite",
         "steps": [
             {
-                "uses": "DeterminateSystems/magic-nix-cache-action@cec65ff6f104850203b152861d3f9e5f1747885d",
+                "uses": "DeterminateSystems/magic-nix-cache-action@1828eb4e5414b8dfe36daae53ea3e4b8c3fdec7a",
                 "with": {
                     "use-gha-cache": "${{ inputs.use-gha-cache }}",
                     "flakehub-flake-name": "${{ inputs.flakehub-flake-name }}",
