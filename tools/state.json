@@ -1,6 +1,6 @@
 {
   "upstream_action_revision": "b4a9864e3a8ab8179be30f2e70fd71fe9996bb9d",
-  "self_version": "v3.18.0",
+  "self_version": "v3.18.1",
   "binary_revision": "58ea4ed96a8b70cedcfa36b46167a3c81adf2b10",
   "checkout_action_tag": "v6.0.2"
 }
