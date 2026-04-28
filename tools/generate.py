@@ -9,6 +9,11 @@ def eprintln(line):
     print(line, file=sys.stderr)
 
 
+def sanitize_cell(s):
+    """Collapse whitespace runs (including newlines) and escape pipes."""
+    return " ".join(str(s).split()).replace("|", "\\|")
+
+
 def make_inputs_table(inputs):
     headers = ["Parameter", "Description", "Required", "Default"]
     rows = []
@@ -19,14 +24,12 @@ def make_inputs_table(inputs):
         rows.append(
             [
                 f"`{input_name}`",
-                input_options["description"],
+                sanitize_cell(input_options["description"]),
                 "📍" if required else "",
                 f"`{default}`" if default is not None else "",
             ]
         )
 
-    # The following is just tedious markdown formatting junk so we didn't need a dep,
-    # if it seems wack just rewrite it lol
     all_rows = [headers] + rows
     col_widths = [max(len(str(cell)) for cell in col) for col in zip(*all_rows)]
 
