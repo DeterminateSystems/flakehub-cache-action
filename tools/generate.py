@@ -30,6 +30,8 @@ def make_inputs_table(inputs):
             ]
         )
 
+    # The following is just tedious markdown formatting junk so we didn't need a dep,
+    # if it seems wack just rewrite it lol
     all_rows = [headers] + rows
     col_widths = [max(len(str(cell)) for cell in col) for col in zip(*all_rows)]
 
