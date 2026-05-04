@@ -118,8 +118,16 @@ Set to "disabled" or false to explicitly disable the GitHub Actions Cache.
 
 ### Debugging mode
 
-If you're having issues pushing to FlakeHub Cache and would like deeper insight into potential causes, we recommend [enabling verbose logging][gha-env-vars] by setting the `RUNNER_DEBUG` environment variable to `1`.
-Here's an example:
+If you're having issues pushing to FlakeHub Cache and would like deeper insight into potential causes, we recommend enabling verbose logging by setting one of these [environment variables][gha-env-vars] to either `1` or `true`:
+
+- `RUNNER_DEBUG`
+- `ACTIONS_STEP_DEBUG`
+- `ACTIONS_RUNNER_DEBUG`
+
+When you set one of these, GitHub Actions generates a ZIP archive of the runner's logs that you can download by clicking **Download log archive** in the dropdown menu for that run.
+You can set these variables either in your workflow YAML configuration in `.github/workflows` or as a repository-wide secret or environment variable.
+
+Here's an example of enabling debugging mode in a workflow configuration:
 
 ```yaml
 steps:
@@ -128,8 +136,6 @@ steps:
       RUNNER_DEBUG: 1
     uses: DeterminateSystems/flakehub-cache-action@v3
 ```
-
-When set, you can download a ZIP archive of the Action logs by clicking **Download log archive** in the Action run's dropdown.
 
 ## 🛟 Need help? We're here for you
 
