@@ -46,8 +46,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     permissions:
-      id-token: "write"
-      contents: "read"
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@<!-- checkout_action_tag -->
       - uses: DeterminateSystems/determinate-nix-action@v3
