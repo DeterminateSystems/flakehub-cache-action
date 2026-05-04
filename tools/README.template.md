@@ -126,7 +126,7 @@ We're committed to making your experience with Determinate Nix and FlakeHub as s
 [det-nix]: https://docs.determinate.systems/determinate-nix
 [determinate]: https://docs.determinate.systems
 [detsys]: https://determinate.systems
-[flakehub]: https//flakehub.com
+[flakehub]: https://flakehub.com
 [gha-env-vars]: https://docs.github.com/en/actions/reference/workflows-and-actions/variables#default-environment-variables
 [installer]: https://github.com/DeterminateSystems/nix-installer/
 [nix-installer-action]: https://github.com/DeterminateSystems/nix-installer-action
