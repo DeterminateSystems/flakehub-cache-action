@@ -52,7 +52,7 @@
         "source-revision": {
             "description": "The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.",
             "required": false,
-            "default": "58ea4ed96a8b70cedcfa36b46167a3c81adf2b10"
+            "default": "f744b910cd69226888c61a3ddf933fdbe7286095"
         },
         "source-tag": {
             "description": "The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.",
