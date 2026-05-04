@@ -120,19 +120,9 @@ We're committed to making your experience with Determinate Nix and FlakeHub as s
 
 🤝 **Looking for enterprise support?** We offer dedicated support contracts and shared Slack channels for organizations requiring priority assistance. [Contact us](mailto:support@determinate.systems) to learn more.
 
-[action]: https://github.com/DeterminateSystems/flakehub-cache-action/
 [cache]: https://flakehub.com/cache
 [dependabot]: https://github.com/dependabot
-[det-nix]: https://docs.determinate.systems/determinate-nix
 [determinate]: https://docs.determinate.systems
-[detsys]: https://determinate.systems
-[flakehub]: https://flakehub.com
 [gha-env-vars]: https://docs.github.com/en/actions/reference/workflows-and-actions/variables#default-environment-variables
-[installer]: https://github.com/DeterminateSystems/nix-installer/
 [nix-installer-action]: https://github.com/DeterminateSystems/nix-installer-action
 [nix-installer]: https://github.com/DeterminateSystems/nix-installer
-[privacy]: https://determinate.systems/policies/privacy
-[telemetry]: https://github.com/DeterminateSystems/magic-nix-cache/blob/main/magic-nix-cache/src/telemetry.rs
-[z2n]: https://zero-to-nix.com
-[z2ncache]: https://zero-to-nix.com/concepts/caching#binary-caches
-[zhaofeng]: https://github.com/zhaofengli/
