@@ -11,7 +11,7 @@
 
 # ️❄️ FlakeHub Cache Action
 
-FlakeHub Cache is the zero-configuration binary cache for GitHub Actions, workstations, production, and other CI platforms.
+[FlakeHub Cache][cache] is the zero-configuration binary cache for GitHub Actions, workstations, production, and other CI platforms.
 
 FlakeHub Cache is part of [Determinate], the best way to use Nix on macOS, WSL, and Linux.
 It is an end-to-end toolchain for using Nix, from installation to collaboration to deployment.
@@ -58,7 +58,7 @@ jobs:
 > [!IMPORTANT]
 > You must add a `permissions` block like the one in the example above or else Determinate Nix can't authenticate with FlakeHub or [FlakeHub Cache][cache].
 
-## 📌 Version pinning: lock it down!
+## 📌 Version pinning: lock it down
 
 ### Why pin your Action?
 
@@ -95,7 +95,22 @@ updates:
 
 <!-- table -->
 
-## 🛟 Need help? We're here for you!
+### Debugging mode
+
+If you're having issues pushing to FlakeHub Cache and would like deeper insight into potential causes, we recommend [enabling verbose logging][gha-env-vars] by setting the `RUNNER_DEBUG` environment variable to `1`.
+Here's an example:
+
+```yaml
+steps:
+  - name: Push to FlakeHub Cache
+    env:
+      RUNNER_DEBUG: 1
+    uses: DeterminateSystems/flakehub-cache-action@<!-- version_major -->
+```
+
+When set, you can download a ZIP archive of the Action logs by clicking **Download log archive** in the Action run's dropdown.
+
+## 🛟 Need help? We're here for you
 
 We're committed to making your experience with Determinate Nix and FlakeHub as smooth as possible. If you encounter any issues or have questions, here's how to reach us:
 
@@ -110,8 +125,9 @@ We're committed to making your experience with Determinate Nix and FlakeHub as s
 [dependabot]: https://github.com/dependabot
 [det-nix]: https://docs.determinate.systems/determinate-nix
 [determinate]: https://docs.determinate.systems
-[detsys]: https://determinate.systems/
+[detsys]: https://determinate.systems
 [flakehub]: https//flakehub.com
+[gha-env-vars]: https://docs.github.com/en/actions/reference/workflows-and-actions/variables#default-environment-variables
 [installer]: https://github.com/DeterminateSystems/nix-installer/
 [nix-installer-action]: https://github.com/DeterminateSystems/nix-installer-action
 [nix-installer]: https://github.com/DeterminateSystems/nix-installer
