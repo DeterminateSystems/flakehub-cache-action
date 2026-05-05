@@ -2,6 +2,8 @@
 
 set -eux
 
+scriptroot=$(dirname "$(realpath "$0")")
+
 ACTION_TAG=$1
 REPO="DeterminateSystems/magic-nix-cache-action"
 
@@ -61,3 +63,4 @@ main() {
 }
 
 main
+"$scriptroot"/generate.sh
