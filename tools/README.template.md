@@ -103,7 +103,9 @@ If you're having issues pushing to FlakeHub Cache and would like deeper insight 
 - `ACTIONS_STEP_DEBUG`
 - `ACTIONS_RUNNER_DEBUG`
 
-When you set one of these, GitHub Actions generates a ZIP archive of the runner's logs that you can download by clicking **Download log archive** in the dropdown menu for that run.
+GitHub Actions generates a ZIP archive of the workflow's logs that you can download by clicking **Download log archive** in the dropdown menu for that run.
+If you set one of these environment variables, the archive includes the verbose logs.
+
 You can set these variables either in your workflow YAML configuration in `.github/workflows` or as a repository-wide secret or environment variable.
 
 Here's an example of enabling debugging mode in a workflow configuration:
