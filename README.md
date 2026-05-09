@@ -11,7 +11,7 @@
 
 # ️❄️ FlakeHub Cache Action
 
-FlakeHub Cache is the zero-configuration binary cache for GitHub Actions, workstations, production, and other CI platforms.
+[FlakeHub Cache][cache] is the zero-configuration binary cache for GitHub Actions, workstations, production, and other CI platforms.
 
 FlakeHub Cache is part of [Determinate], the best way to use Nix on macOS, WSL, and Linux.
 It is an end-to-end toolchain for using Nix, from installation to collaboration to deployment.
@@ -58,7 +58,7 @@ jobs:
 > [!IMPORTANT]
 > You must add a `permissions` block like the one in the example above or else Determinate Nix can't authenticate with FlakeHub or [FlakeHub Cache][cache].
 
-## 📌 Version pinning: lock it down!
+## 📌 Version pinning: lock it down
 
 ### Why pin your Action?
 
@@ -112,7 +112,30 @@ updates:
 | `flakehub-api-server`       | The FlakeHub API server.                                                                                                                                                                                                                                                                                                                                    |          | `https://api.flakehub.com`                 |
 | `_internal-strict-mode`     | Whether to fail when any errors are thrown. Used only to test the Action; do not set this in your own workflows.                                                                                                                                                                                                                                            |          | `False`                                    |
 
-## 🛟 Need help? We're here for you!
+### Debugging mode
+
+If you're having issues pushing to FlakeHub Cache and would like deeper insight into potential causes, we recommend enabling verbose logging by setting one of these [environment variables][gha-env-vars] to either `1` or `true`:
+
+- `RUNNER_DEBUG`
+- `ACTIONS_STEP_DEBUG`
+- `ACTIONS_RUNNER_DEBUG`
+
+GitHub Actions generates a ZIP archive of the workflow's logs that you can download by clicking **Download log archive** in the dropdown menu for that run.
+If you set one of these environment variables, the archive includes the verbose logs.
+
+You can set these variables either in your workflow YAML configuration in `.github/workflows` or as a repository-wide secret or environment variable.
+
+Here's an example of enabling debugging mode in a workflow configuration:
+
+```yaml
+steps:
+  - name: Push to FlakeHub Cache
+    env:
+      RUNNER_DEBUG: 1
+    uses: DeterminateSystems/flakehub-cache-action@v3
+```
+
+## 🛟 Need help? We're here for you
 
 We're committed to making your experience with Determinate Nix and FlakeHub as smooth as possible. If you encounter any issues or have questions, here's how to reach us:
 
@@ -122,18 +145,9 @@ We're committed to making your experience with Determinate Nix and FlakeHub as s
 
 🤝 **Looking for enterprise support?** We offer dedicated support contracts and shared Slack channels for organizations requiring priority assistance. [Contact us](mailto:support@determinate.systems) to learn more.
 
-[action]: https://github.com/DeterminateSystems/flakehub-cache-action/
 [cache]: https://flakehub.com/cache
 [dependabot]: https://github.com/dependabot
-[det-nix]: https://docs.determinate.systems/determinate-nix
 [determinate]: https://docs.determinate.systems
-[detsys]: https://determinate.systems/
-[flakehub]: https//flakehub.com
-[installer]: https://github.com/DeterminateSystems/nix-installer/
+[gha-env-vars]: https://docs.github.com/en/actions/reference/workflows-and-actions/variables#default-environment-variables
 [nix-installer-action]: https://github.com/DeterminateSystems/nix-installer-action
 [nix-installer]: https://github.com/DeterminateSystems/nix-installer
-[privacy]: https://determinate.systems/policies/privacy
-[telemetry]: https://github.com/DeterminateSystems/magic-nix-cache/blob/main/magic-nix-cache/src/telemetry.rs
-[z2n]: https://zero-to-nix.com
-[z2ncache]: https://zero-to-nix.com/concepts/caching#binary-caches
-[zhaofeng]: https://github.com/zhaofengli/
