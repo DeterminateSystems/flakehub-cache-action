@@ -25,7 +25,9 @@ jobs:
           - nix-system: "x86_64-linux"
             runner: "ubuntu-22.04"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
       - name: Install Nix on ${{ matrix.systems.nix-system }} system
         uses: DeterminateSystems/determinate-nix-action@main
         with:
@@ -37,7 +39,7 @@ jobs:
           _internal-strict-mode: true
       - name: Check the cache for liveness
         env:
-          EXPECT_GITHUB_CACHE: ${{ toJson(false) }}
+          EXPECT_GITHUB_CACHE: "false"
         run: |
           .github/workflows/cache-test.sh
 
@@ -48,8 +50,10 @@ jobs:
       id-token: "write"
       contents: "read"
     steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/determinate-nix-action@v3
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - uses: DeterminateSystems/determinate-nix-action@bafaa638b9d5ec0e7e3ac1a7fc80453ef1fd265f # v3.20.0
       - uses: ./.
       - run: nix develop -c typos
         if: success() || failure()
@@ -68,6 +72,8 @@ jobs:
 
   success:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     needs:
       - run-systems
       - lint
