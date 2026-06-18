@@ -71,6 +71,8 @@ keep_inputs = [
     "source-revision",
     "source-tag",
     "source-url",
+    "source-checksums-url",
+    "source-checksums-sha256",
     # debugging
     "flakehub-cache-server",
     "flakehub-api-server",
