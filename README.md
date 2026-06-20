@@ -49,9 +49,9 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: DeterminateSystems/determinate-nix-action@v3
-      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.21.1 to pin to a release
+      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.21.2 to pin to a release
       - run: nix build .
 ```
 
@@ -65,7 +65,7 @@ jobs:
 Unlike `DeterminateSystems/magic-nix-cache-action`, we fully support explicit version pinning for maximum consistency.
 This Action is **automatically tagged** for every release, giving you complete control over your CI environment:
 
-📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.21.1` guarantees:
+📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.21.2` guarantees:
 
 - Same `flakehub-cache-action` revision every time
 - Reproducible CI workflows, even years later
@@ -105,9 +105,11 @@ updates:
 | `source-binary`             | Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                              |          |                                            |
 | `source-branch`             | The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                        |          |                                            |
 | `source-pr`                 | The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                            |          |                                            |
-| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                  |          | `0adf8a195ce61495398745b4b8c60f3001847866` |
+| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                  |          | `03659f4394aec2317771e29041ef266669e2ee12` |
 | `source-tag`                | The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                           |          |                                            |
 | `source-url`                | A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.                                                                                                                                                                                                                                                                       |          |                                            |
+| `source-checksums-url`      | URL of a `shasum`-format checksums file listing the SHA-256 of each artifact. Used together with `source-checksums-sha256` to verify the downloaded installer.                                                                                                                                                                                              |          |                                            |
+| `source-checksums-sha256`   | Pinned SHA-256 (hex) of the file served at `source-checksums-url`. Must be set together with `source-checksums-url`.                                                                                                                                                                                                                                        |          |                                            |
 | `flakehub-cache-server`     | The FlakeHub binary cache server.                                                                                                                                                                                                                                                                                                                           |          | `https://cache.flakehub.com`               |
 | `flakehub-api-server`       | The FlakeHub API server.                                                                                                                                                                                                                                                                                                                                    |          | `https://api.flakehub.com`                 |
 | `_internal-strict-mode`     | Whether to fail when any errors are thrown. Used only to test the Action; do not set this in your own workflows.                                                                                                                                                                                                                                            |          | `False`                                    |
