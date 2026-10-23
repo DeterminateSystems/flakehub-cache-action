@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.1
       - uses: DeterminateSystems/determinate-nix-action@v3
-      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.23.3 to pin to a release
+      - uses: DeterminateSystems/flakehub-cache-action@v3 # or v3.24.0 to pin to a release
       - run: nix build .
 ```
 
@@ -65,7 +65,7 @@ jobs:
 Unlike `DeterminateSystems/magic-nix-cache-action`, we fully support explicit version pinning for maximum consistency.
 This Action is **automatically tagged** for every release, giving you complete control over your CI environment:
 
-📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.23.3` guarantees:
+📍 Pinning to `DeterminateSystems/flakehub-cache-action@v3.24.0` guarantees:
 
 - Same `flakehub-cache-action` revision every time
 - Reproducible CI workflows, even years later
@@ -105,7 +105,7 @@ updates:
 | `source-binary`             | Run a version of the cache binary from somewhere already on disk. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                              |          |                                            |
 | `source-branch`             | The branch of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                        |          |                                            |
 | `source-pr`                 | The PR of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                            |          |                                            |
-| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                  |          | `5a7f052c8f0c6511bbef3570eeed4d39242171ef` |
+| `source-revision`           | The revision of `nix-magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                  |          | `cd88146e8de45fc50afaee98634fea04249c3c13` |
 | `source-tag`                | The tag of `magic-nix-cache` to use. Conflicts with all other `source-*` options.                                                                                                                                                                                                                                                                           |          |                                            |
 | `source-url`                | A URL pointing to a `magic-nix-cache` binary. Overrides all other `source-*` options.                                                                                                                                                                                                                                                                       |          |                                            |
 | `source-checksums-url`      | URL of a `shasum`-format checksums file listing the SHA-256 of each artifact. Used together with `source-checksums-sha256` to verify the downloaded installer.                                                                                                                                                                                              |          |                                            |
